@@ -2,7 +2,7 @@
 
 namespace SimplePageFactory.Pages
 {
-    partial class HomePage : BasePage
+    public partial class HomePage : BasePage
     {
         private string Url => "http://newtours.demoaut.com/";
 
@@ -13,9 +13,9 @@ namespace SimplePageFactory.Pages
 
         public FlightPage Login(string userName, string password)
         {
-            UserNameField.SendKeys(userName);
-            PasswordField.SendKeys(password);
-            SignInButton.Click();
+            userNameField.SendKeys(userName);
+            passwordField.SendKeys(password);
+            signInButton.Click();
             return new FlightPage(driver);
         }
     }

@@ -1,30 +1,23 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
 
 namespace SimplePageFactory.Pages.Sections
 {
-    // TODO: should inherit from BaseSection
-    partial class MainMenuSection
+    public partial class MainMenuSection : BaseSection
     {
-        private IWebDriver driver;
-
-        public MainMenuSection(IWebDriver driver) {
-            this.driver = driver;
-            PageFactory.InitElements(driver, this);
-        }
+        public MainMenuSection(IWebDriver driver) : base(driver) { }
 
         public HomePage GoToHomePage()
         {
-            HomeLink.Click();
+            homeLink.Click();
             return new HomePage(driver);
         }
 
         public FlightPage GoToFlightPage()
         {
-            FlightsLink.Click();
+            flightsLink.Click();
             return new FlightPage(driver);
         }
 
-        // TODO: implement 5 navigation methods
+        // TODO: implement 5 other navigation methods
     }
 }

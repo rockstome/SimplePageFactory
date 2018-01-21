@@ -6,12 +6,12 @@ namespace SimplePageFactory.Pages
     partial class HomePage
     {
         [FindsBy(How = How.Name, Using = "userName")]
-        private IWebElement UserNameField;
+        private IWebElement userNameField;
 
         [FindsBy(How = How.Name, Using = "password")]
-        private IWebElement PasswordField;
+        private IWebElement passwordField;
 
         [FindsBy(How = How.Name, Using = "login")]
-        private IWebElement SignInButton;
+        private IWebElement signInButton;
     }
 }

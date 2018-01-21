@@ -2,7 +2,7 @@
 
 namespace SimplePageFactory.Pages
 {
-    partial class FlightPage : BasePage
+    public partial class FlightPage : BasePage
     {
         private string Url => "http://newtours.demoaut.com/mercuryreservation.php";
 

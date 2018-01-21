@@ -6,18 +6,18 @@ namespace SimplePageFactory.Tests
 {
     class BaseTest
     {
-        protected IWebDriver driver { get; set; }
+        protected IWebDriver Driver { get; private set; }
 
         [OneTimeSetUp]
         public void BaseOneTimeSetUp()
         {
-            driver = new ChromeDriver();
+            Driver = new ChromeDriver();
         }
 
         [OneTimeTearDown]
         public void BaseOneTimeTearDown()
         {
-            driver.Quit();
+            Driver.Quit();
         }
     }
 }

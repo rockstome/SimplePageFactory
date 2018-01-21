@@ -8,7 +8,7 @@ namespace SimplePageFactory.Tests
         [Test]
         public void LoginWithValidCredentials()
         {
-            var homePage = new HomePage(driver);
+            var homePage = new HomePage(Driver);
             homePage.AssertIsAt();
 
             var flightPage = homePage.Login("a", "a");

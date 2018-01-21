@@ -4,7 +4,7 @@ using SimplePageFactory.Pages.Sections;
 
 namespace SimplePageFactory.Pages
 {
-    abstract class BasePage
+    public abstract class BasePage
     {
         protected IWebDriver driver;
 

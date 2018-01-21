@@ -6,24 +6,24 @@ namespace SimplePageFactory.Pages.Sections
     partial class MainMenuSection
     {
         [FindsBy(How = How.XPath, Using = "//a[text()='Home']")]
-        private IWebElement HomeLink;
+        private IWebElement homeLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Flights']")]
-        private IWebElement FlightsLink;
+        private IWebElement flightsLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Hotels']")]
-        private IWebElement HotelsLink;
+        private IWebElement hotelsLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Car Rentals']")]
-        private IWebElement CarRentalsLink;
+        private IWebElement carRentalsLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Cruises']")]
-        private IWebElement CruisesLink;
+        private IWebElement cruisesLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Destinations']")]
-        private IWebElement DestinationsLink;
+        private IWebElement destinationsLink;
 
         [FindsBy(How = How.XPath, Using = "//a[text()='Vacations']")]
-        private IWebElement VacationsLink;
+        private IWebElement vacationsLink;
     }
 }

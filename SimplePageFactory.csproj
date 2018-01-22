@@ -67,11 +67,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helpers\WebElementHelper.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\FlightPage\FlightPage.Asserter.cs" />
     <Compile Include="Pages\FlightPage\FlightPage.cs" />
     <Compile Include="Pages\HomePage\HomePage.Asserter.cs" />
     <Compile Include="Pages\HomePage\HomePage.cs" />
+    <Compile Include="Pages\Sections\BaseSection.cs" />
     <Compile Include="Pages\Sections\MainMenuSection\MainMenuSection.cs" />
     <Compile Include="Pages\Sections\MainMenuSection\MainMenuSection.Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -21,5 +21,14 @@ namespace SimplePageFactory.Helpers
             if (element.Selected)
                 element.Click();
         }
+
+        /// <summary>
+        /// Click on IWebElement by execute script "arguments[0].click();".
+        /// </summary>
+        public static void JsClick(this IWebElement element, IWebDriver driver)
+        {
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            executor.ExecuteScript("arguments[0].click();", element);
+        }
     }
 }

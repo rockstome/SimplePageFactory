@@ -37,4 +37,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // Setting related with NUnit
-[assembly: Parallelizable(ParallelScope.Fixtures)]
+//[assembly: Parallelizable(ParallelScope.Fixtures)]

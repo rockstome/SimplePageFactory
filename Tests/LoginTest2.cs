@@ -3,13 +3,16 @@ using SimplePageFactory.Pages;
 
 namespace SimplePageFactory.Tests
 {
-    class LoginTest : BaseTest
+    class LoginTest2 : BaseTest
     {
         [Test]
         public void LoginWithValidCredentials()
         {
             var homePage = new HomePage(Driver);
-            homePage.FakeAction();
+            homePage.AssertIsAt();
+
+            var flightPage = homePage.Login("a", "a");
+            flightPage.AssertIsAt();
         }
 
         [Test]

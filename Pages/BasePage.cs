@@ -15,5 +15,6 @@ namespace SimplePageFactory.Pages
         }
 
         public MainMenuSection MainMenuSection => new MainMenuSection(driver);
+        public UpperMenuSection UpperMenuSection => new UpperMenuSection(driver);
     }
 }

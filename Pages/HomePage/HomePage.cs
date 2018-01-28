@@ -18,5 +18,13 @@ namespace SimplePageFactory.Pages
             signInButton.Click();
             return new FlightPage(driver);
         }
+
+        // TODO : delete me
+        public void FakeAction()
+        {
+            userNameField.SendKeys("fake data");
+            passwordField.Clear();
+            signInButton.Click();
+        }
     }
 }

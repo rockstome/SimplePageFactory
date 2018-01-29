@@ -2,32 +2,21 @@
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Events;
 
 namespace SimplePageFactory.Tests
 {
     abstract class BaseTest
     {
-        protected EventFiringWebDriver Driver { get; private set; }
+        private IWebDriver _driver;
+        public EventFiringWebDriver Driver { get; private set; }
         protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
         
         [OneTimeSetUp]
         public void BaseOneTimeSetUp()
         {
-            Driver = new EventFiringWebDriver(new ChromeDriver());
-            Driver.ElementClicking += Driver_ElementClicking;
-            Driver.ElementValueChanged += Driver_ElementValueChanged;
-        }
-
-        private void Driver_ElementValueChanged(object sender, WebElementEventArgs e)
-        {
-            logger.Debug($"On website: {e.Driver.Url, -50} changed value of element with tag name: '{e.Element.TagName}', actual value: '{e.Element.GetAttribute("value")}'");
-        }
-
-        private void Driver_ElementClicking(object sender, WebElementEventArgs e)
-        {
-            logger.Debug("Clicking on element with tag name: " + e.Element.TagName);
+            _driver = DriverFactory.Create(Browsers.Chrome);
+            Driver = new EventFiringDriverFactory().Create(_driver, logger);
         }
 
         [SetUp]

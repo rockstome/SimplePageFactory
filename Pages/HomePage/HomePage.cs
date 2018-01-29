@@ -19,7 +19,7 @@ namespace SimplePageFactory.Pages
             return new FlightPage(driver);
         }
 
-        // TODO : delete me
+        // TODO : delete me, only for practice purpose
         public void FakeAction()
         {
             userNameField.SendKeys("fake data");

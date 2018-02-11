@@ -9,14 +9,15 @@ namespace SimplePageFactory.Tests
     abstract class BaseTest
     {
         private IWebDriver _driver;
-        public EventFiringWebDriver Driver { get; private set; }
+        public IWebDriver Driver { get; private set; }
         protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
         
         [OneTimeSetUp]
         public void BaseOneTimeSetUp()
         {
             _driver = DriverFactory.Create(Browsers.Chrome);
-            Driver = new EventFiringDriverFactory().Create(_driver, logger);
+            Driver = _driver;
+            //Driver = new EventFiringDriverFactory().Create(_driver, logger);
         }
 
         [SetUp]

@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using SimplePageFactory.Helpers;
 
 namespace SimplePageFactory.Pages
 {

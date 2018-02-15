@@ -102,7 +102,9 @@
     <Compile Include="Pages\HomePage\HomePage.Map.cs" />
     <Compile Include="Pages\SignOnPage\SignOnPage.Map.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Results\" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

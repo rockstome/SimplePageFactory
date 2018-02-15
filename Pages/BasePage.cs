@@ -14,7 +14,7 @@ namespace SimplePageFactory.Pages
             PageFactory.InitElements(driver, this);
         }
 
-        public MainMenuSection MainMenuSection => new MainMenuSection(driver);
-        public UpperMenuSection UpperMenuSection => new UpperMenuSection(driver);
+        public MainMenuSection MainMenu => new MainMenuSection(driver);
+        public UpperMenuSection UpperMenu => new UpperMenuSection(driver);
     }
 }

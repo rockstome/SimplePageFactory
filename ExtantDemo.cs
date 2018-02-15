@@ -12,7 +12,7 @@ namespace ExtantDemo
     public class MyClassName
     {
         public ExtentReports extent;
-        public ExtentTest logger;
+        public ExtentTest htmlLogger;
         string fileName;
 
         [OneTimeSetUp]
@@ -42,18 +42,18 @@ namespace ExtantDemo
         [SetUp]
         public void SetUp()
         {
-            logger = extent.CreateTest(TestContext.CurrentContext.Test.MethodName);
-            logger.Info("Start test");
+            htmlLogger = extent.CreateTest(TestContext.CurrentContext.Test.MethodName);
+            htmlLogger.Info("Start test");
         }
 
 
         [Test]
         public void MyTest1()
         {
-            logger.Info("1. Navigate to login page");
-            logger.Info("2. Input username and password");
-            logger.Info("3. Click login button");
-            logger.Info("4. Verify page title");
+            htmlLogger.Info("1. Navigate to login page");
+            htmlLogger.Info("2. Input username and password");
+            htmlLogger.Info("3. Click login button");
+            htmlLogger.Info("4. Verify page title");
             Assert.That(true);
         }
 
@@ -63,7 +63,7 @@ namespace ExtantDemo
             string text = "some label";
             var m = MarkupHelper.CreateLabel(text, ExtentColor.Green);
 
-            logger.Pass(m);
+            htmlLogger.Pass(m);
 
             Assert.That(true);
         }
@@ -77,7 +77,7 @@ namespace ExtantDemo
         [Test]
         public void MyTest4()
         {
-            logger.AssignAuthor("Tomasz Solarz");
+            htmlLogger.AssignAuthor("Tomasz Solarz");
 
             try
             {
@@ -87,14 +87,14 @@ namespace ExtantDemo
             }
             catch(Exception ex)
             {
-                logger.Fail(ex);
+                htmlLogger.Fail(ex);
             }
         }
 
         [TearDown]
         public void GetResult()
         {
-            logger.Info("End test");
+            htmlLogger.Info("End test");
 
             var status = TestContext.CurrentContext.Result.Outcome.Status;
             var stackTrace = string.IsNullOrEmpty(TestContext.CurrentContext.Result.StackTrace)
@@ -122,7 +122,7 @@ namespace ExtantDemo
 
 
 
-            logger.Log(logStatus, errorMessage + stackTrace);
+            htmlLogger.Log(logStatus, errorMessage + stackTrace);
         }
 
         [OneTimeTearDown]

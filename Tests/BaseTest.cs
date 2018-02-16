@@ -16,11 +16,13 @@ namespace SimplePageFactory.Tests
     {
         private IWebDriver _driver;
         public IWebDriver Driver { get; private set; }
+
         protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ExtentReports extent;
         public ExtentTest htmlLogger;
-        string fileName;
+
+        public static string resultsDir;
 
         [OneTimeSetUp]
         public void BaseOneTimeSetUp()
@@ -31,11 +33,11 @@ namespace SimplePageFactory.Tests
 
             //Driver = new EventFiringDriverFactory().Create(_driver, logger);
 
-            var dir = TestContext.CurrentContext.TestDirectory + "\\";
+            var dir = TestContext.CurrentContext.TestDirectory;
+            resultsDir = dir + @"\..\..\Results\";
             var fullClassName = TestContext.CurrentContext.Test.ClassName;
             var className = fullClassName.Substring(fullClassName.LastIndexOf(".") + 1);
-            fileName = className + ".html";
-            var reporter = new ExtentHtmlReporter(dir + fileName);
+            var reporter = new ExtentHtmlReporter(resultsDir + className + ".html");
 
             reporter.Configuration().Theme = Theme.Dark;
             reporter.Configuration().DocumentTitle = "My title";
@@ -52,7 +54,7 @@ namespace SimplePageFactory.Tests
             extent.AddSystemInfo("Env", "UAT");
             extent.AddSystemInfo("Browser", $"{browserName} {browserVersion}");
             extent.AddSystemInfo("OSVersion", osVersion);
-            extent.AddSystemInfo("Jira key", @"<a href=""www.onet.pl"">MNTT-112</a>");
+            extent.AddSystemInfo("Jira key", @"<a href=""https://www.onet.pl"">MNTT-112</a>");
             extent.AddSystemInfo("Username", "123456 / 22222222 / 1234567890");
         }
 
@@ -80,12 +82,10 @@ namespace SimplePageFactory.Tests
                 TestContext.WriteLine("Test pass");
                 //logger.Debug(message);
             }
-
             if (resultState.Status == TestStatus.Failed && resultState.Label != "Error")
             {
                 TestContext.WriteLine("Test fail - assertion fail");
             }
-
             if (resultState.Status == TestStatus.Failed && resultState.Label == "Error")
             {
                 TestContext.WriteLine("Test fail - unexpected exception");
@@ -110,12 +110,9 @@ namespace SimplePageFactory.Tests
                     logStatus = Status.Fail;
                     htmlLogger.Fail (MarkupHelper.CreateLabel("FAIL", ExtentColor.Red));
 
-                    var timeAndDate = new StringBuilder(DateTime.Now.ToString());
-                    timeAndDate.Replace("/", "_");
-                    timeAndDate.Replace(":", "_");
-                    timeAndDate.Replace(".", "_");
+                    var timeStamp = new StringBuilder(DateTime.Now.ToString("yyyyMMdd_HHmmss"));
 
-                    var filePath = $@"C:\Users\tomas\Documents\Visual Studio 2015\Projects\Tomasz\SimplePageFactory\Results\{timeAndDate}.PNG";
+                    var filePath = resultsDir + $@"imgs\{timeStamp}.PNG";
 
                     //TODO: what if browser is closed?
                     var ss = ((ITakesScreenshot)Driver).GetScreenshot();
@@ -132,8 +129,6 @@ namespace SimplePageFactory.Tests
                     logStatus = Status.Warning;
                     break;
             }
-
-
 
             htmlLogger.Log(logStatus, errorMessage + stackTrace);
         }

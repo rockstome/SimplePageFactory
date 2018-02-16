@@ -1,7 +1,5 @@
 ﻿using NUnit.Framework;
-using OpenQA.Selenium;
 using SimplePageFactory.Pages;
-using System.Threading;
 
 namespace SimplePageFactory.Tests
 {
@@ -19,6 +17,9 @@ namespace SimplePageFactory.Tests
 
             htmlLogger.Info("3. Verify user is logged in");
             flightPage.AssertIsAt();
+
+            // TODO add screen for every step
+            //htmlLogger.AddScreenCaptureFromPath();
 
             Assert.That(false);
         }

@@ -4,8 +4,13 @@ namespace SimplePageFactory.Pages
 {
     public partial class FlightPage : BasePage
     {
-        private string Url => "http://newtours.demoaut.com/mercuryreservation.php";
+        protected override string Url => "http://newtours.demoaut.com/mercuryreservation.php";
 
         public FlightPage(IWebDriver driver) : base(driver) { }
+
+        public FlightPage DoNothing()
+        {
+            return new FlightPage(driver);
+        }
     }
 }

@@ -15,14 +15,14 @@ namespace SimplePageFactory.Tests
     abstract class BaseTest
     {
         private IWebDriver _driver;
-        public IWebDriver Driver { get; private set; }
+        protected IWebDriver Driver { get; private set; }
 
         protected static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public ExtentReports extent;
-        public ExtentTest htmlLogger;
+        private ExtentReports extent;
+        protected ExtentTest htmlLogger;
 
-        public static string resultsDir;
+        private static string resultsDir;
 
         [OneTimeSetUp]
         public void BaseOneTimeSetUp()
@@ -31,8 +31,10 @@ namespace SimplePageFactory.Tests
             _driver = DriverFactory.Create(browser);
             Driver = _driver;
 
+            //TODO: event firing driver
             //Driver = new EventFiringDriverFactory().Create(_driver, logger);
 
+            // TODO: używanie TestDirectory w tym miejscu jest bez sensu
             var dir = TestContext.CurrentContext.TestDirectory;
             resultsDir = dir + @"\..\..\Results\";
             var fullClassName = TestContext.CurrentContext.Test.ClassName;
@@ -49,13 +51,15 @@ namespace SimplePageFactory.Tests
 
             var browserName = ((RemoteWebDriver)Driver).Capabilities.BrowserName;
             var browserVersion = ((RemoteWebDriver)Driver).Capabilities.Version;
+            // TODO: osVErsion for win10 dont work, also is 32 or 64 
             var osVersion = Environment.OSVersion.ToString();
 
-            extent.AddSystemInfo("Env", "UAT");
+            //TODO: env, jira, user credentuaks hardcoded
+            extent.AddSystemInfo("App environment", "UAT");
             extent.AddSystemInfo("Browser", $"{browserName} {browserVersion}");
-            extent.AddSystemInfo("OSVersion", osVersion);
-            extent.AddSystemInfo("Jira key", @"<a href=""https://www.onet.pl"">MNTT-112</a>");
-            extent.AddSystemInfo("Username", "123456 / 22222222 / 1234567890");
+            extent.AddSystemInfo("OS", osVersion);
+            extent.AddSystemInfo("JIRA", @"<a href=""https://www.onet.pl"">MNTT-112</a>");
+            extent.AddSystemInfo("User credentials", "123456 / 22222222 / 1234567890");
         }
 
         [SetUp]

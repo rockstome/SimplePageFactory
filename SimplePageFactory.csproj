@@ -72,7 +72,6 @@
   <ItemGroup>
     <Compile Include="DriverFactory.cs" />
     <Compile Include="EventFiringDriverFactory.cs" />
-    <Compile Include="ExtantDemo.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\WebElementHelper.cs" />
     <Compile Include="Pages\BasePage.cs" />
@@ -80,6 +79,7 @@
     <Compile Include="Pages\FlightPage\FlightPage.cs" />
     <Compile Include="Pages\HomePage\HomePage.Asserter.cs" />
     <Compile Include="Pages\HomePage\HomePage.cs" />
+    <Compile Include="Pages\PageLogger.cs" />
     <Compile Include="Pages\_Sections\BaseSection.cs" />
     <Compile Include="Pages\_Sections\MainMenuSection\MainMenuSection.cs" />
     <Compile Include="Pages\_Sections\MainMenuSection\MainMenuSection.Map.cs" />
@@ -88,13 +88,13 @@
     <Compile Include="Pages\SignOnPage\SignOnPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\BaseTest.cs" />
-    <Compile Include="Tests\LoginTest2.cs" />
     <Compile Include="Tests\LoginTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Results\imgs\" />
+    <Folder Include="Results\JsReports\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

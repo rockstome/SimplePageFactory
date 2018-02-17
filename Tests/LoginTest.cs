@@ -6,20 +6,14 @@ namespace SimplePageFactory.Tests
     class LoginTest : BaseTest
     {
         [Test]
-        [TestCase("a", "a")]
-        public void LoginWithValidCredentials(string userName, string password)
+        public void LoginWithValidCredentials()
         {
             htmlLogger.Info("1. Open homepage");
             var homePage = new HomePage(Driver);
 
+
             htmlLogger.Info("2. Input valid credentials");
-            var flightPage = homePage.Login(userName, password);
-
-            htmlLogger.Info("3. Verify user is logged in");
-            flightPage.AssertIsAt();
-
-            // TODO add screen for every step
-            //htmlLogger.AddScreenCaptureFromPath();
+            var flightPage = homePage.Login<FlightPage>(userName: "a", password: "a");
 
             Assert.That(false);
         }

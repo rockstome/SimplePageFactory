@@ -4,8 +4,8 @@ namespace SimplePageFactory.Pages
 {
     public partial class SignOnPage : BasePage
     {
-        public SignOnPage(IWebDriver driver) : base(driver) { }
+        protected override string Url => "http://newtours.demoaut.com/mercurysignon.php";
 
-        // methods
+        public SignOnPage(IWebDriver driver) : base(driver) { }
     }
 }

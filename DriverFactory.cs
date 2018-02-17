@@ -17,7 +17,9 @@ namespace SimplePageFactory
             switch (browser)
             {
                 case Browsers.Chrome:
-                    driver = new ChromeDriver();
+                    ChromeOptions options = new ChromeOptions();
+                    options.SetLoggingPreference(LogType.Browser, LogLevel.All);
+                    driver = new ChromeDriver(options);
                     break;
                 case Browsers.Firefox:
                     driver = new FirefoxDriver();

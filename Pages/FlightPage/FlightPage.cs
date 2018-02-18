@@ -2,7 +2,7 @@
 
 namespace SimplePageFactory.Pages
 {
-    public partial class FlightPage : BasePage
+    public partial class FlightPage : BasePage, IHomePageLogin
     {
         protected override string Url => "http://newtours.demoaut.com/mercuryreservation.php";
 

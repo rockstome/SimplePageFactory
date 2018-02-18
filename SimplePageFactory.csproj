@@ -38,6 +38,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="ExtentReports, Version=3.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExtentReports.3.0.2\lib\ExtentReports.dll</HintPath>
@@ -73,7 +78,9 @@
     <Compile Include="DriverFactory.cs" />
     <Compile Include="EventFiringDriverFactory.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
+    <Compile Include="Helpers\ExtentHelper.cs" />
     <Compile Include="Helpers\WebElementHelper.cs" />
+    <Compile Include="JsErrors.cs" />
     <Compile Include="Pages\BasePage.cs" />
     <Compile Include="Pages\FlightPage\FlightPage.Asserter.cs" />
     <Compile Include="Pages\FlightPage\FlightPage.cs" />
@@ -91,10 +98,10 @@
     <Compile Include="Tests\LoginTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Sites\jserrors.html" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="ClassDiagram1.cd" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

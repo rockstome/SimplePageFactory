@@ -9,8 +9,12 @@ namespace SimplePageFactory.Pages
 
         public HomePage(IWebDriver driver) : base(driver)
         {
-            // TODO navigating in constructor is a bad idea
-            this.driver.Navigate().GoToUrl(Url);
+        }
+
+        public HomePage GoTo()
+        {
+            driver.Navigate().GoToUrl(Url);
+            return this;
         }
 
         /// <summary>
@@ -20,7 +24,7 @@ namespace SimplePageFactory.Pages
         /// <param name="userName">User name to be typed into field.</param>
         /// <param name="password">Password to be typed into field.</param>
         /// <returns>Page to be redirected.</returns>
-        public TPage Login<TPage>(string userName, string password) where TPage : BasePage
+        public TPage Login<TPage>(string userName, string password) where TPage : IHomePageLogin
         {
             userNameField.SendKeys(userName);
             passwordField.SendKeys(password);
@@ -28,4 +32,6 @@ namespace SimplePageFactory.Pages
             return (TPage)Activator.CreateInstance(typeof(TPage), driver);
         }
     }
+
+    public interface IHomePageLogin { }
 }

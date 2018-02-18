@@ -44,17 +44,16 @@ namespace SimplePageFactory.Tests
             reporter.Configuration().Theme = Theme.Dark;
             reporter.Configuration().DocumentTitle = "My title";
             reporter.Configuration().ReportName = className + " - Report";
-            reporter.Configuration().Protocol = Protocol.HTTPS;
+            reporter.Configuration().Protocol = Protocol.HTTP;
 
             extent = new ExtentReports();
             extent.AttachReporter(reporter);
 
             var browserName = ((RemoteWebDriver)Driver).Capabilities.BrowserName;
             var browserVersion = ((RemoteWebDriver)Driver).Capabilities.Version;
-            // TODO: osVErsion for win10 dont work, also is 32 or 64 
-            var osVersion = Environment.OSVersion.ToString();
+            var osVersion = Helpers.ExtentHelper.OSFriendlyName();
 
-            //TODO: env, jira, user credentuaks hardcoded
+            //TODO: JIRA, user credentials hardcoded
             extent.AddSystemInfo("App environment", "UAT");
             extent.AddSystemInfo("Browser", $"{browserName} {browserVersion}");
             extent.AddSystemInfo("OS", osVersion);

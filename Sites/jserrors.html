@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>WebDriverJs Demo Page</title>
+		<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+		<script type="text/javascript">
+			var i = 10;
+			var j = 0;
+			var k = i/j;
+			document.getElementById("errorpage").innerHTML = k;
+		</script>
+		
+		<script type="text/javascript">
+			foo.substring(1);
+			
+			function loop(x) {
+				loop(x + 1);
+			};
+			
+			function syntax() {
+				throw new SyntaxError('Hello', 'someFile.js', 10);
+			};
+		</script>
+	</head>
+
+	<body>
+	  <button type="button" id="range" onclick=loop(10)>RangeError on click</button>
+	  <button type="button" id="syntax" onclick=syntax()>SyntaxError on click</button>
+	  <h1 id="errorpage">WebDriverJs Demo Error Page</h1>
+	  <h2>An error should be present in the console</h2>
+	</body>
+</html>

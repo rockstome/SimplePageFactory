@@ -18,9 +18,7 @@ namespace SimplePageFactory
 
         private void Driver_ExceptionThrown(object sender, WebDriverExceptionEventArgs e)
         {
-            var timeAndDate = DateTime.Now.ToString();
-            timeAndDate.Replace("/", "_");
-            timeAndDate.Replace(":", "_");
+            var timeAndDate = DateTime.Now.ToString("yyyyMMdd_hhmmss");
 
             var driver = e.Driver;
             ((ITakesScreenshot)driver).GetScreenshot().SaveAsFile(timeAndDate + ".PNG");

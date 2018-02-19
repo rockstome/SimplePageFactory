@@ -96,6 +96,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\BaseTest.cs" />
     <Compile Include="Tests\LoginTest.cs" />
+    <Compile Include="Tests\_FrameworkTests\WebElementHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Sites\jserrors.html" />

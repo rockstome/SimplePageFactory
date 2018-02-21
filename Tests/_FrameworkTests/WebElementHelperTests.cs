@@ -6,7 +6,7 @@ using SimplePageFactory.Helpers;
 namespace SimplePageFactory.Tests._FrameworkTests
 {
     [TestFixture]
-    public class WebElementHelpers
+    public class WebElementHelperTests
     {
         IWebDriver d;
         IWebElement e;
@@ -23,7 +23,7 @@ namespace SimplePageFactory.Tests._FrameworkTests
             d.Navigate().GoToUrl("about:blank");
         }
 
-        [Test, Category("Framework")]
+        [Test, Category("WebElementHelperTests")]
         public void JsGetInputValue()
         {
             d.Navigate().GoToUrl(@"data:text/html,<div><input id='input' ></input>");
@@ -39,7 +39,7 @@ namespace SimplePageFactory.Tests._FrameworkTests
             Assert.That(e.JsGetInputValue(d), Is.EqualTo(string.Empty));
         }
 
-        [Test, Category("Framework")]
+        [Test, Category("WebElementHelperTests")]
         public void JsClear()
         {
             d.Navigate().GoToUrl(@"data:text/html,<div><input id='input' ></input>");
@@ -55,7 +55,7 @@ namespace SimplePageFactory.Tests._FrameworkTests
             Assert.That(e.GetAttribute("value"), Is.EqualTo(string.Empty));
         }
 
-        [Test, Category("Framework")]
+        [Test, Category("WebElementHelperTests")]
         public void JsSendKeys()
         {
             d.Navigate().GoToUrl(@"data:text/html,<div><input id='input' ></input>");
@@ -67,7 +67,7 @@ namespace SimplePageFactory.Tests._FrameworkTests
             Assert.That(e.GetAttribute("value"), Is.EqualTo(text));
         }
 
-        [Test, Category("Framework")]
+        [Test, Category("WebElementHelperTests")]
         public void JsHighlightParent()
         {
             d.Navigate().GoToUrl(@"data:text/html,<div><h1>Hello</h1><h1 id='h1'>World</h1>");
@@ -87,8 +87,8 @@ namespace SimplePageFactory.Tests._FrameworkTests
 
         }
 
-        [TearDown]
-        public void TearDown()
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
             d.Quit();
         }

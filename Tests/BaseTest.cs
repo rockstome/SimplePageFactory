@@ -53,6 +53,7 @@ namespace SimplePageFactory.Tests
             var browserVersion = ((RemoteWebDriver)Driver).Capabilities.Version;
             var osVersion = Helpers.ExtentHelper.OSFriendlyName();
 
+            // TODO: można dodac wersje selenium
             //TODO: JIRA, user credentials hardcoded
             extent.AddSystemInfo("App environment", "UAT");
             extent.AddSystemInfo("Browser", $"{browserName} {browserVersion}");

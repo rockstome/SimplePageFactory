@@ -27,6 +27,7 @@ namespace SimplePageFactory
                 default:
                     break;
             }
+            driver.Manage().Window.Size = new System.Drawing.Size(1366, 768);
             return driver;
         }
     }

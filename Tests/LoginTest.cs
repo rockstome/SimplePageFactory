@@ -8,6 +8,8 @@ namespace SimplePageFactory.Tests
         [Test]
         public void LoginWithValidCredentials()
         {
+            htmlLogger.AssignCategory("Login");
+
             htmlLogger.Info("1. Open homepage");
             var homePage = new HomePage(Driver).GoTo();
 

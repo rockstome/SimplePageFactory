@@ -52,11 +52,13 @@ namespace SimplePageFactory.Tests
             var browserName = ((RemoteWebDriver)Driver).Capabilities.BrowserName;
             var browserVersion = ((RemoteWebDriver)Driver).Capabilities.Version;
             var osVersion = Helpers.ExtentHelper.OSFriendlyName();
+            var window = Driver.Manage().Window.Size;
 
-            // TODO: można dodac wersje selenium
+            // TODO: można dodac wersje selenium, chromedrivera
             //TODO: JIRA, user credentials hardcoded
             extent.AddSystemInfo("App environment", "UAT");
             extent.AddSystemInfo("Browser", $"{browserName} {browserVersion}");
+            extent.AddSystemInfo("Resolution", $"{window.Width}×{window.Height}");
             extent.AddSystemInfo("OS", osVersion);
             extent.AddSystemInfo("JIRA", @"<a href=""https://www.onet.pl"">MNTT-112</a>");
             extent.AddSystemInfo("User credentials", "123456 / 22222222 / 1234567890");

@@ -26,28 +26,29 @@ namespace SimplePageFactory
 
                 Driver.ScriptExecuting += ScriptExecuting;
                 Driver.ScriptExecuted += ScriptExecuted;
+
+                Driver.ExceptionThrown += ExceptionThrown;
+
+                Driver.FindingElement += FindingElement;
+                Driver.FindElementCompleted += FindElementCompleted;
+
+                Driver.ElementClicking += ElementClicking;
+                Driver.ElementClicked += ElementClicked;
+
+                Driver.ElementValueChanging += ElementValueChanging;
+                Driver.ElementValueChanged += ElementValueChanged;
             }
             return Driver;
         }
 
-        private void ScriptExecuting(object sender, WebDriverScriptEventArgs e)
-        {
-            logger.Debug($"Before executing script: {e.Script}");
-        }
-
-        private void ScriptExecuted(object sender, WebDriverScriptEventArgs e)
-        {
-            logger.Debug($"After executed script: {e.Script}");
-        }
-
         private void Navigating(object sender, WebDriverNavigationEventArgs e)
         {
-            logger.Debug($"Before navigating to: {e.Url}, my url was: {e.Driver.Url}");
+            logger.Debug($"Before navigating to: {e.Url}, I was at: {e.Driver.Url}");
         }
 
         private void Navigated(object sender, WebDriverNavigationEventArgs e)
         {
-            logger.Debug($"After navigating to: {e.Url}, my url is: {e.Driver.Url}");
+            logger.Debug($"After navigating to: {e.Url}, I'm at: {e.Driver.Url}");
         }
 
         private void NavigatingBack(object sender, WebDriverNavigationEventArgs e)
@@ -70,34 +71,51 @@ namespace SimplePageFactory
             logger.Debug($"After navigating forward, I'm at: {e.Driver.Url}");
         }
 
+        private void ScriptExecuting(object sender, WebDriverScriptEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, before executing script: {e.Script}");
+        }
 
-
-
-
-
+        private void ScriptExecuted(object sender, WebDriverScriptEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, after executed script: {e.Script}");
+        }
 
         private void ExceptionThrown(object sender, WebDriverExceptionEventArgs e)
         {
-            // TODO check if this works on assertion and regular exceptions
-            logger.Debug($"Exception was thrown. {e.ThrownException.ToString()}");
-        }
-
-
-        private void FindElementCompleted(object sender, FindElementEventArgs e)
-        {
-            logger.Debug($"Complete to find element {e.FindMethod}");
+            //exceptions are logged in teardown
         }
 
         private void FindingElement(object sender, FindElementEventArgs e)
         {
-            logger.Debug($"Prepare to find element {e.FindMethod}");
+            logger.Debug($"On: {e.Driver.Url}, before to find element {e.FindMethod}");
+        }
+
+        private void FindElementCompleted(object sender, FindElementEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, after finding element {e.FindMethod}");
+        }
+
+        private void ElementClicking(object sender, WebElementEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, before to click on element with tag: {e.Element.TagName}, " +
+                $"innerText: {e.Element.Text}, location: {e.Element.Location.ToString()}, displayed: {e.Element.Displayed}, " +
+                $"enabled: {e.Element.Enabled},selected: {e.Element.Selected}, size: {e.Element.Size.ToString()}");
+        }
+
+        private void ElementClicked(object sender, WebElementEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, after clicking on element");
+        }
+
+        private void ElementValueChanging(object sender, WebElementEventArgs e)
+        {
+            logger.Debug($"On: {e.Driver.Url}, before to change value of element, old value was: '{e.Element.GetAttribute("value")}'");
         }
 
         private void ElementValueChanged(object sender, WebElementEventArgs e)
         {
-            logger.Debug($"On website: {e.Driver.Url} changed value of element with tag name: '{e.Element.TagName}', actual value: '{e.Element.GetAttribute("value")}'");
+            logger.Debug($"On: {e.Driver.Url}, after changing value of element, new value is: '{e.Element.GetAttribute("value")}'");
         }
-
-
     }
 }

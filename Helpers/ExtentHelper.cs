@@ -3,7 +3,10 @@ using System;
 
 namespace SimplePageFactory.Helpers
 {
-    class ExtentHelper
+    /// <summary>
+    /// <see cref="ExtentHelper"/> class provides methods for easier configuration. 
+    /// </summary>
+    public static class ExtentHelper
     {
         private static string HKLM_GetString(string path, string key)
         {

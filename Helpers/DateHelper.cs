@@ -4,6 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace SimplePageFactory.Helpers
 {
+    /// <summary>
+    /// <see cref="DateHelper"/> class provides methods to manipulate with dates.
+    /// </summary>
     public static class DateHelper
     {
         /// <summary>

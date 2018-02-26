@@ -1,18 +1,29 @@
 ﻿using NLog;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.Events;
-using System;
 
 namespace SimplePageFactory
 {
+    /// <summary>
+    /// Implementation of factory, used to create objects. 
+    /// </summary>
     public class EventFiringDriverFactory
     {
         private Logger logger;
 
+        /// <summary>
+        /// Method for creating an instance of <see cref="EventFiringWebDriver"/> 
+        /// with the ability to logging to NLog.
+        /// </summary>
+        /// <param name="driver">The driver to register events for.</param>
+        /// <param name="logger">The logger to register events to.</param>
+        /// <returns>Driver with possibility to register events to logger.</returns>
         public EventFiringWebDriver CreateInstance(IWebDriver driver, Logger logger)
         {
             this.logger = logger;
             var Driver = new EventFiringWebDriver(driver);
+
+            // set condition to 'false' to disable firing on event
             if (true)
             {
                 Driver.Navigating += Navigating;

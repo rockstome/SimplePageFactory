@@ -75,6 +75,7 @@
     <Compile Include="EventFiringDriverFactory.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\ExtentHelper.cs" />
+    <Compile Include="Helpers\WaitHelper.cs" />
     <Compile Include="Helpers\WebElementHelper.cs" />
     <Compile Include="JsErrors.cs" />
     <Compile Include="Pages\BasePage.cs" />
@@ -108,6 +109,7 @@
     <Compile Include="Pages\SignOnPage\SignOnPage.Map.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="JSON\" />
     <Folder Include="Results\imgs\" />
     <Folder Include="Results\JsReports\" />
   </ItemGroup>

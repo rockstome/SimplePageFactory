@@ -11,19 +11,19 @@ namespace SimplePageFactory.Pages.Sections
         [FindsBy(How = How.XPath, Using = "//a[text()='Flights']")]
         private IWebElement flightsLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Hotels']")]
-        private IWebElement hotelsLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='Hotels']")]
+        //private IWebElement hotelsLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Car Rentals']")]
-        private IWebElement carRentalsLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='Car Rentals']")]
+        //private IWebElement carRentalsLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Cruises']")]
-        private IWebElement cruisesLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='Cruises']")]
+        //private IWebElement cruisesLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Destinations']")]
-        private IWebElement destinationsLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='Destinations']")]
+        //private IWebElement destinationsLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='Vacations']")]
-        private IWebElement vacationsLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='Vacations']")]
+        //private IWebElement vacationsLink;
     }
 }

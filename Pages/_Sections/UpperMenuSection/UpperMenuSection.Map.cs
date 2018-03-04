@@ -8,7 +8,7 @@ namespace SimplePageFactory.Pages.Sections
         [FindsBy(How = How.XPath, Using = "//a[text()='SIGN-OFF']")]
         private IWebElement signOffLink;
 
-        [FindsBy(How = How.XPath, Using = "//a[text()='SIGN-ON']")]
-        private IWebElement signOnLink;
+        //[FindsBy(How = How.XPath, Using = "//a[text()='SIGN-ON']")]
+        //private IWebElement signOnLink;
     }
 }

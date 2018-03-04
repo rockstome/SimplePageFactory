@@ -97,6 +97,9 @@
     <Compile Include="Tests\_FrameworkTests\WebElementHelperTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MicrosoftWebDriver.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Sites\jserrors.html" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -139,8 +142,12 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.35.0\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.2.35.0\build\Selenium.WebDriver.ChromeDriver.targets'))" />
     <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.9.0\build\net35\NUnit3TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\Selenium.Firefox.WebDriver.0.19.1\build\Selenium.Firefox.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.Firefox.WebDriver.0.19.1\build\Selenium.Firefox.WebDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.IEDriver64.3.3.0.1\build\Selenium.WebDriver.IEDriver64.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.IEDriver64.3.3.0.1\build\Selenium.WebDriver.IEDriver64.targets'))" />
   </Target>
   <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.35.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.35.0\build\Selenium.WebDriver.ChromeDriver.targets')" />
+  <Import Project="..\packages\Selenium.Firefox.WebDriver.0.19.1\build\Selenium.Firefox.WebDriver.targets" Condition="Exists('..\packages\Selenium.Firefox.WebDriver.0.19.1\build\Selenium.Firefox.WebDriver.targets')" />
+  <Import Project="..\packages\Selenium.WebDriver.IEDriver64.3.3.0.1\build\Selenium.WebDriver.IEDriver64.targets" Condition="Exists('..\packages\Selenium.WebDriver.IEDriver64.3.3.0.1\build\Selenium.WebDriver.IEDriver64.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

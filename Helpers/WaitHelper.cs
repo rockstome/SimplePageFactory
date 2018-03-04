@@ -142,7 +142,7 @@ namespace SimplePageFactory.Helpers
 
     public abstract class BasePage
     {
-        protected abstract string[] Url { get; }
+        protected virtual string[] Url => new string[] { };
         protected IWebDriver driver;
 
         public BasePage(IWebDriver driver)
@@ -171,11 +171,9 @@ namespace SimplePageFactory.Helpers
 
     public class StartPage : BasePage
     {
-        protected override string[] Url => new string[] { };
 
         public StartPage(IWebDriver driver) : base(driver)
         {
-
         }
 
         public void GoToClickPage()
@@ -195,7 +193,6 @@ namespace SimplePageFactory.Helpers
 
         public ClickPage(IWebDriver driver) : base(driver)
         {
-
         }
 
         private IWebElement Button => driver.FindElement(By.Id("button"));

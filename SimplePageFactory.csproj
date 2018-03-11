@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="DriverFactory.cs" />
     <Compile Include="EventFiringDriverFactory.cs" />
+    <Compile Include="GrowlTest.cs" />
     <Compile Include="Helpers\DateHelper.cs" />
     <Compile Include="Helpers\ExtentHelper.cs" />
     <Compile Include="Helpers\WaitHelper.cs" />

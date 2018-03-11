@@ -55,6 +55,7 @@ namespace SimplePageFactory
         private void Navigating(object sender, WebDriverNavigationEventArgs e)
         {
             logger.Debug($"Before navigating to: {e.Url}, I was at: {e.Driver.Url}");
+           
         }
 
         private void Navigated(object sender, WebDriverNavigationEventArgs e)
@@ -94,7 +95,7 @@ namespace SimplePageFactory
 
         private void ExceptionThrown(object sender, WebDriverExceptionEventArgs e)
         {
-            //exceptions are logged in teardown
+            //exceptions are logged in teardown test method by Nunit
         }
 
         private void FindingElement(object sender, FindElementEventArgs e)

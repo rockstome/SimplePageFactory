@@ -64,9 +64,9 @@ namespace SimplePageFactory
 
     class WaitHelper
     {
-        public static bool WaitForJsToLoad(IWebDriver webDriver)
+        public static bool WaitForJsToLoad(IWebDriver webDriver, int seconds = 30)
         {
-            var wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(30));
+            var wait = new WebDriverWait(webDriver, TimeSpan.FromSeconds(seconds));
 
             Func<IWebDriver, bool> JsLoad = (d) =>
             {

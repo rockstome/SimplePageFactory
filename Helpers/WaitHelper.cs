@@ -106,8 +106,6 @@ namespace SimplePageFactory.Helpers
             sw.Restart();
             d = Browser(browser);
 
-            int i = 30_000;
-
             StartPage sp = new StartPage(d);
             sp.GoToHoverPage();
 

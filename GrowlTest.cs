@@ -79,7 +79,7 @@ namespace SimplePageFactory
                 {
                     return (Int64)((IJavaScriptExecutor)d).ExecuteScript("return jQuery.active;") == 0;
                 }
-                catch (Exception e)
+                catch
                 {
                     return false;
                 }

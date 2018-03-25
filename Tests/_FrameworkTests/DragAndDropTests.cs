@@ -52,7 +52,6 @@ namespace SimplePageFactory.Tests._FrameworkTests
         {
             d.Navigate().GoToUrl(@"http://demo.guru99.com/test/drag_drop.html");
             d.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            Console.WriteLine(d.Manage().Timeouts().ImplicitWait.Seconds);
 
             s = d.FindElement(By.XPath("//*[@id='credit2']/a"));
             t = d.FindElement(By.XPath("//*[@id='bank']/li"));

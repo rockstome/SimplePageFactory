@@ -73,13 +73,12 @@ namespace SimplePageFactory.Tests._FrameworkTests
             d.Navigate().GoToUrl(@"data:text/html,<div><h1>Hello</h1><h1 id='h1'>World</h1>");
             e = d.FindElement(By.Id("h1"));
 
-            //IWebElement parentNode = d.FindElement(By.XPath("//*[@id='h1']/.."));
-            IWebElement parentNode = e.FindElement(By.XPath("./.."));
+            IWebElement parent = e.FindElement(By.XPath("./.."));
 
             // check if parent has no style
-            Assert.That(parentNode.GetAttribute("style"), Is.EqualTo(string.Empty));
+            Assert.That(parent.GetAttribute("style"), Is.EqualTo(string.Empty));
 
-            // check if parent has style
+            // highlight a parent
             e.JsHighlightParent();
 
             // check if we cant still use this element

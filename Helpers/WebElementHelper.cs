@@ -110,10 +110,65 @@ namespace SimplePageFactory.Helpers
             IWebDriver driver = ((RemoteWebElement)element).WrappedDriver;
             IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
             object oldStyle = executor.ExecuteScript("return arguments[0].parentNode.style", element);
-            // TODO: new style should be appended to old style. not replaced
+            // TODO: new style should be appended to old style, not replaced
             executor.ExecuteScript("return arguments[0].parentNode.style.border='3px solid red'", element);
             Thread.Sleep(1000);
             executor.ExecuteScript("return arguments[0].parentNode.style.border=arguments[1]", element, oldStyle);
+        }
+
+        /// <summary>
+        /// Get text of element.
+        /// </summary>
+        /// <returns>Text of element.</returns>
+        public static string JsGetText(this IWebElement element)
+        {
+            IWebDriver driver = ((RemoteWebElement)element).WrappedDriver;
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            return (string)executor.ExecuteScript("return arguments[0].text", element);
+        }
+
+        public static void JsDragAndDrop(this IWebElement source, IWebElement target)
+        {
+            string script = @"
+                function createEvent(typeOfEvent) {
+                    var event = document.createEvent(""CustomEvent"");
+                    event.initCustomEvent(typeOfEvent, true, true, null);
+                    event.dataTransfer = {
+                        data: { },
+                        setData: function(key, value) {
+                            this.data[key] = value;
+                        },
+                        getData: function(key) {
+                            return this.data[key];
+                        }
+                    };
+                    return event;
+                }
+                function dispatchEvent(element, event, transferData) {
+                    if (transferData !== undefined)
+                    {
+                        event.dataTransfer = transferData;
+                    }
+                    if (element.dispatchEvent) {
+                        element.dispatchEvent(event);
+                    } else if (element.fireEvent) {
+                        element.fireEvent(""on"" + event.type, event);
+                    }
+                }
+                function simulateHTML5DragAndDrop(element, target)
+                {
+                    var dragStartEvent = createEvent('dragstart');
+                    dispatchEvent(element, dragStartEvent);
+                    var dropEvent = createEvent('drop');
+                    dispatchEvent(target, dropEvent, dragStartEvent.dataTransfer);
+                    var dragEndEvent = createEvent('dragend');
+                    dispatchEvent(element, dragEndEvent, dropEvent.dataTransfer);
+                }
+                return simulateHTML5DragAndDrop(arguments[0], arguments[1])";
+
+            IWebDriver driver = ((RemoteWebElement)target).WrappedDriver;
+            IJavaScriptExecutor executor = (IJavaScriptExecutor)driver;
+            executor.ExecuteScript(script, source, target);
         }
 
         // https://www.w3schools.com/jsref/dom_obj_all.asp

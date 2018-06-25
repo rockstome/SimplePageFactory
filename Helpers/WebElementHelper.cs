@@ -8,6 +8,23 @@ namespace SimplePageFactory.Helpers
     public static class WebElementHelper
     {
         /// <summary>
+        /// Paste text into web element.
+        /// </summary>
+        public static void PasteText(this IWebElement element, IWebDriver driver, string text)
+        {
+            element.Clear();
+            Thread thread = new Thread(() => Clipboard.SetText(text));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            thread.Join();
+            new Actions(driver)
+                .MoveToElement(element)
+                .Click()
+                .SendKeys(OpenQA.Selenium.Keys.Control + "v")
+                .Perform();
+        }
+        
+        /// <summary>
         /// Checks this checkbox if not checked already.
         /// </summary>
         public static void Check(this IWebElement element)

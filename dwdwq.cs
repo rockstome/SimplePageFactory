@@ -18,14 +18,12 @@ namespace JiraNUnit
                 result.AddRange(GetTestsFullName(dll));
             }
 
-            HashSet<string> r = new HashSet<string>(result);
+            var playlist = BuildPlaylist(result.Distinct().ToList());
 
-            var final = BuildPlaylist(r);
-
-            File.WriteAllText("final.playlist", final);
+            File.WriteAllText("final.playlist", playlist);
         }
 
-        private static string BuildPlaylist(HashSet<string> testsSet)
+        private static string BuildPlaylist(List<string> testsSet)
         {
             StringBuilder s = new StringBuilder();
             s.AppendLine(@"<Playlist Version=""1.0"">");

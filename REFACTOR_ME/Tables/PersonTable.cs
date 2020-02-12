@@ -1,20 +1,15 @@
-﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
-namespace SimplePageFactory.REFACTOR_ME.Tables
+namespace SimplePageFactory.Tables
 {
     public abstract class AbstractTable
     {
         protected IWebElement table;
-
-        public AbstractTable(IWebElement table)
-        {
-            this.table = table;
-        }
 
         /// <summary>
         /// Method to get list of table headers.
@@ -22,28 +17,29 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
         /// <returns>List of table headers.</returns>
         public List<string> GetHeaders()
         {
-            List<string> headers = new List<string>();
-            foreach (IWebElement th in table.FindElements(By.TagName("th")))
-            {
-                headers.Add(th.Text);
-            }
-            return headers;
+            return table
+                .FindElements(By.TagName("th"))
+                .Select(e => e.Text)
+                .ToList();
         }
 
         /// <summary>
         /// Method to get number of rows.
         /// </summary>
         /// <returns>Number of rows.</returns>
-        public int GetTotalRows()
+        public virtual int GetRowsCount()
         {
-            return table.FindElement(By.TagName("tbody")).FindElements(By.TagName("tr")).Count;
+            return table
+                .FindElements(By.CssSelector("tbody tr"))
+                .Count;
         }
     }
 
     public class PersonTable : AbstractTable
     {
-        public PersonTable(IWebElement table) : base(table)
+        public PersonTable(IWebElement table)
         {
+            this.table = table;
         }
 
         /// <summary>
@@ -52,20 +48,10 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
         /// <returns>List of Person class objects.</returns>
         public List<Person> GetRows()
         {
-            List<Person> rows = new List<Person>();
-
-            foreach (IWebElement tr in table.FindElement(By.TagName("tbody"))
-                .FindElements(By.TagName("tr")))
-            {
-                List<IWebElement> cells = new List<IWebElement>();
-                var row = tr.FindElements(By.TagName("td"));
-                foreach (IWebElement cell in tr.FindElements(By.TagName("td")))
-                {
-                    cells.Add(cell);
-                }
-                rows.Add(Person.Mapper(cells));
-            }
-
+            var rows = table
+                .FindElements(By.TagName("tbody tr"))
+                .Select(tr => Person.PersonMapper(tr.FindElements(By.TagName("td")).ToList()))
+                .ToList();
             return rows;
         }
 
@@ -76,15 +62,13 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
         /// <returns>Person who meets the criteria.</returns>
         public Person GetRow(int index)
         {
-            if (0 < index && index <= GetTotalRows())
-            {
-                var row = table
-                    .FindElement(By.TagName("tbody"))
-                    .FindElement(By.XPath($".//tr[{index}]"));
-                return Person.Mapper(new List<IWebElement>(row.FindElements(By.XPath(".//td"))));
-            }
-            else
+            if (index <= 0 || index > GetRowsCount())
                 throw new ArgumentOutOfRangeException();
+
+            var row = table
+                .FindElement(By.CssSelector("tbody > tr"));
+
+            return Person.PersonMapper(row.FindElements(By.XPath(".//td")).ToList());
         }
 
         /// <summary>
@@ -92,12 +76,13 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
         /// </summary>
         /// <param name="query">The query text to search for.</param>
         /// <returns>Person who meets the criteria.</returns>
-        public Person GetRow(string query)
+        public Person GetRowByCellText(string query)
         {
             var row = table
                 .FindElement(By.TagName("tbody"))
                 .FindElement(By.XPath($".//td[contains(.,'{query}')]//parent::tr"));
-            return Person.Mapper(new List<IWebElement>(row.FindElements(By.XPath(".//td"))));
+
+            return Person.PersonMapper(new List<IWebElement>(row.FindElements(By.XPath(".//td"))));
         }
 
         /// <summary>
@@ -112,7 +97,7 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
             // TODO: on large tables this sucks
             var persons = GetRows();
             foreach (var person in persons)
-                if (person.GetBalance().Contains(balance))
+                if (person.Balance.Contains(balance))
                     return person;
             throw new NotFoundException();
         }
@@ -120,54 +105,52 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
 
     public class Person
     {
-        private int id;
-        private string name;
-        private string surname;
-        private List<IWebElement> links;
-        private string balance;
+        public int Id { get; }
+        public string Name { get; }
+        public string Surname { get; }
+        public List<string> Links { get; }
+        public string Balance { get; }
 
-        public int GetId() => id;
-        public string GetName() => name;
-        public string GetSurname() => surname;
-        /// <param name="index">Start from 1.</param>
-        public IWebElement GetLink(int index) => links[index - 1];
-        public string GetBalance() => balance;
 
-        public Person(int id, string name, string surname, List<IWebElement> links, string balance)
+        public Person(
+            int id,
+            string name,
+            string surname,
+            List<string> links,
+            string balance)
         {
-            this.id = id;
-            this.name = name;
-            this.surname = surname;
-            this.links = links;
-            this.balance = balance;
+            Id = id;
+            Name = name;
+            Surname = surname;
+            Links = links;
+            Balance = balance;
         }
 
         public override string ToString()
         {
-            var hrefs = links.Select(s => s.GetAttribute("href")).ToList();
-            return $"new Person({id},\"{name}\",\"{surname}\",{hrefs.Count},{balance})";
+            return $"new Person({Id},\"{Name}\",\"{Surname}\",{Links.Count},{Balance}).ToString()";
         }
 
-        public static Func<List<IWebElement>, Person> Mapper =
+        public static Func<List<IWebElement>, Person> PersonMapper =
             (cells) =>
             {
                 int id = int.Parse(cells[0].Text);
                 var links = cells[3].FindElements(By.XPath(".//a"));
                 var divs = cells[4].FindElements(By.XPath(".//div"));
                 string balance = string.Join(" ", divs.Select(e => e.Text));
-                
+
                 return new Person(
                 id,
                 cells[1].Text,
                 cells[2].Text,
-                new List<IWebElement>(links),
+                links.Select(e => e.Text).ToList(),
                 balance);
             };
     }
 
-    public class PersonTest
+    public class PersonTableTest
     {
-        [Test]
+        [Fact]
         public void BasicActions()
         {
             IWebDriver d = new ChromeDriver();
@@ -176,19 +159,19 @@ namespace SimplePageFactory.REFACTOR_ME.Tables
             var table = new PersonTable(d.FindElement(By.Id("table")));
 
             // Number of rows.
-            Console.WriteLine(table.GetTotalRows());
+            Console.WriteLine(table.GetRowsCount());
 
             // Name of person in 1st row.
-            Console.WriteLine(table.GetRow(1).GetName());
+            Console.WriteLine(table.GetRow(1).Name);
 
             // Balance of person in 2nd row.
-            Console.WriteLine(table.GetRow(2).GetBalance());
+            Console.WriteLine(table.GetRow(2).Balance);
 
             // Balance of Adam.
-            Console.WriteLine(table.GetRow("Adam").GetBalance());
+            Console.WriteLine(table.GetRowByCellText("Adam").Balance);
 
-            // Click second link of person who have 99 PLN.
-            table.GetRowByBalance("99 PLN").GetLink(2).Click();
-        }        
+            // Text of second link of person who have 99 PLN.
+            Console.WriteLine(table.GetRowByBalance("99 PLN").Links[1]);
+        }
     }
 }

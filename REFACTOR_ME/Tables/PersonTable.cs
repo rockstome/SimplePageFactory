@@ -12,18 +12,6 @@ namespace SimplePageFactory.Tables
         protected IWebElement table;
 
         /// <summary>
-        /// Method to get list of table headers.
-        /// </summary>
-        /// <returns>List of table headers.</returns>
-        public List<string> GetHeaders()
-        {
-            return table
-                .FindElements(By.TagName("th"))
-                .Select(e => e.Text)
-                .ToList();
-        }
-
-        /// <summary>
         /// Method to get number of rows.
         /// </summary>
         /// <returns>Number of rows.</returns>
@@ -45,44 +33,41 @@ namespace SimplePageFactory.Tables
         /// <summary>
         /// Method to get all table rows.
         /// </summary>
-        /// <returns>List of Person class objects.</returns>
+        /// <returns>List of <see cref="Person"/> class objects.</returns>
         public List<Person> GetRows()
         {
             var rows = table
-                .FindElements(By.TagName("tbody tr"))
-                .Select(tr => Person.PersonMapper(tr.FindElements(By.TagName("td")).ToList()))
+                .FindElements(By.CssSelector("tbody tr"))
+                .Select(tr => Person.PersonMapper(tr.FindElements(By.CssSelector("td")).ToList()))
                 .ToList();
             return rows;
         }
 
         /// <summary>
-        /// Method to get a table row element.
+        /// Method to get row at specific position.
         /// </summary>
-        /// <param name="index">The row index. Star from 1.</param>
-        /// <returns>Person who meets the criteria.</returns>
-        public Person GetRow(int index)
+        /// <param name="position">The row position. Star from 0.</param>
+        /// <returns><see cref="Person"/> class objects.</returns>
+        public Person GetRow(int position)
         {
-            if (index <= 0 || index > GetRowsCount())
-                throw new ArgumentOutOfRangeException();
-
             var row = table
-                .FindElement(By.CssSelector("tbody > tr"));
+                .FindElement(By.CssSelector($"tbody tr{position}")); // TODO not working!
 
-            return Person.PersonMapper(row.FindElements(By.XPath(".//td")).ToList());
+            return Person.PersonMapper(row.FindElements(By.CssSelector("td")).ToList());
         }
 
         /// <summary>
         /// Method to get a table row that contains specific query.
         /// </summary>
-        /// <param name="query">The query text to search for.</param>
-        /// <returns>Person who meets the criteria.</returns>
+        /// <param name="query">The text containing in td tag.</param>
+        /// <returns><see cref="Person"/> class objects.</returns>
         public Person GetRowByCellText(string query)
         {
             var row = table
-                .FindElement(By.TagName("tbody"))
+                .FindElement(By.CssSelector("tbody"))
                 .FindElement(By.XPath($".//td[contains(.,'{query}')]//parent::tr"));
 
-            return Person.PersonMapper(new List<IWebElement>(row.FindElements(By.XPath(".//td"))));
+            return Person.PersonMapper(row.FindElements(By.CssSelector("td")).ToList());
         }
 
         /// <summary>
@@ -94,12 +79,7 @@ namespace SimplePageFactory.Tables
         /// <returns>Person who meets the criteria.</returns>
         public Person GetRowByBalance(string balance)
         {
-            // TODO: on large tables this sucks
-            var persons = GetRows();
-            foreach (var person in persons)
-                if (person.Balance.Contains(balance))
-                    return person;
-            throw new NotFoundException();
+            return GetRows().First(p => p.Balance == balance);
         }
     }
 
@@ -111,13 +91,7 @@ namespace SimplePageFactory.Tables
         public List<string> Links { get; }
         public string Balance { get; }
 
-
-        public Person(
-            int id,
-            string name,
-            string surname,
-            List<string> links,
-            string balance)
+        public Person(int id, string name, string surname, List<string> links,string balance)
         {
             Id = id;
             Name = name;
@@ -135,16 +109,16 @@ namespace SimplePageFactory.Tables
             (cells) =>
             {
                 int id = int.Parse(cells[0].Text);
-                var links = cells[3].FindElements(By.XPath(".//a"));
-                var divs = cells[4].FindElements(By.XPath(".//div"));
+                var links = cells[3].FindElements(By.CssSelector("a"));
+                var divs = cells[4].FindElements(By.CssSelector("div"));
                 string balance = string.Join(" ", divs.Select(e => e.Text));
 
                 return new Person(
-                id,
-                cells[1].Text,
-                cells[2].Text,
-                links.Select(e => e.Text).ToList(),
-                balance);
+                    id,
+                    cells[1].Text,
+                    cells[2].Text,
+                    links.Select(e => e.Text).ToList(),
+                    balance);
             };
     }
 

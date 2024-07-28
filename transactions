@@ -1,0 +1,116 @@
+using System.Collections.Generic;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text.Json;
+using System.ComponentModel.DataAnnotations;
+
+namespace Transactions
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(GetTemplates());
+            Console.WriteLine("");
+            Console.WriteLine(InvokeTemplate("Template1", @"[""someValue1"", ""value2"", ""5.00""]"));
+            Console.WriteLine("");
+            Console.WriteLine(InvokeTemplate("Template1", @"[""val1"", ""val2""]"));
+            Console.WriteLine("");
+            Console.WriteLine(InvokeTemplate("Template2", @"[""uniqueValue""]"));
+            Console.WriteLine("");
+            Console.WriteLine(InvokeTemplate("Template3", @"[""uniqueValue""]"));
+            Console.WriteLine("");
+            Console.WriteLine(InvokeTemplate("Template4", @"[""value4""]"));
+        }
+
+        static string? InvokeTemplate(string name, string parameters)
+        {
+            List<string> @params = JsonSerializer.Deserialize<List<string>>(parameters) ?? [];
+            var method = typeof(Transactions)
+                .GetMethod(name, BindingFlags.Static | BindingFlags.Public) ?? throw new Exception($"Could not find template {name}");
+            var missingParameters = Enumerable.Range(0, method.GetParameters().Length - @params.Count).Select(e => Type.Missing);
+            var paramsObjects = @params.ToList<object>();
+            paramsObjects.AddRange(missingParameters);
+            var returnValue = method.Invoke(null, paramsObjects.ToArray()) as string;
+            return returnValue;
+        }
+
+        static string GetTemplates()
+        {
+            var templates = new List<object>();
+            foreach (var method in typeof(Transactions).GetMethods(BindingFlags.Static | BindingFlags.Public))
+            {
+                var templateDictionary = new Dictionary<string, object?>();
+                templateDictionary.Add("name", method.Name);
+
+                var parameters = method.GetParameters().Select<ParameterInfo, object>(p =>
+                {
+                    var parametersDictionary = new Dictionary<string, object?>();
+                    parametersDictionary.Add("name", p.Name);
+
+                    var displayAttribute = p.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+                    if (displayAttribute != null && displayAttribute.Description != null)
+                        parametersDictionary.Add("description", displayAttribute.Description);
+
+                    if (p.IsOptional)
+                        parametersDictionary.Add("defaultValue", p.DefaultValue);
+
+                    return parametersDictionary;
+                });
+                templateDictionary.Add("parameters", parameters);
+
+                var displayAttribute = method.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+                if (displayAttribute?.Description != null)
+                    templateDictionary.Add("description", displayAttribute.Description);
+
+                templates.Add(templateDictionary);
+            }
+
+            JsonSerializerOptions options = new JsonSerializerOptions() { WriteIndented = true };
+            var json = JsonSerializer.Serialize(templates, options);
+
+            return json;
+        }
+    }
+}
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Transactions
+{
+    static partial class Transactions
+    {
+        [Display(Description = "Some template1")]
+        public static string Template1(
+            [Display(Description = "some param1")] string param1,
+            [Display(Description = "some param2")] string param3,
+            [Display(Description = "some param3")] string param2 = "1.23")
+        {
+            return $"Template1 {param1} {param3} {param2}";
+        }
+
+        [Display(Description = "Some template2")]
+        public static string Template2(string param3)
+        {
+            return $"Template2 {param3}";
+        }
+
+        [Display(Description = "Some template3")]
+        public static string Template3(
+            [Display(Description = "some param3")] string param3)
+        {
+            return $"Template3 {param3}";
+        }
+
+        public static string Template4( string param3)
+        {
+            return $"Template4 {param3}";
+        }
+    }
+}

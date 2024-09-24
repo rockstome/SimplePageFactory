@@ -1,79 +1,82 @@
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-
-namespace JiraNUnit
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            List<string> result = new List<string>();
-
-            var dllsFullName = GetDllsFullName();
-            foreach (var dll in dllsFullName)
-            {
-                result.AddRange(GetTestsFullName(dll));
-            }
-
-            var playlist = BuildPlaylist(result.Distinct().ToList());
-
-            File.WriteAllText("final.playlist", playlist);
-        }
-
-        private static string BuildPlaylist(List<string> testsSet)
-        {
-            StringBuilder s = new StringBuilder();
-            s.AppendLine(@"<Playlist Version=""1.0"">");
-            foreach (var test in testsSet)
-            {
-                s.AppendLine($@"    <Add Test=""{test}""/>");
-            }
-
-            s.AppendLine(" </Playlist>");
-            return s.ToString();
-        }
-
-        private static List<string> GetDllsFullName()
-        {
-            var solution = Directory.GetCurrentDirectory() + "\\..\\..\\..";
-            DirectoryInfo di = new DirectoryInfo(solution);
-            var dlls = di.GetFiles("*.dll", SearchOption.AllDirectories);
-            return dlls
-                .Where(dll => dll.Name == "Libraries.dll" || dll.Name == "MainPage.Dashboard.dll")
-                .Select(dll => dll.FullName)
-                .ToList();
-        }
-
-        private static List<string> GetTestsFullName(string dllFullName) {
-
-            List<string> list = new List<string>();
-
-            var proc = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "C:\\Users\\tomas\\source\\repos\\MN.Retail.Tests.Functional\\packages\\NUnit.ConsoleRunner.3.8.0\\tools\\nunit3-console.exe",
-                    //Arguments = @"--explore C:\Users\tomas\source\repos\MN.Retail.Tests.Functional\MainPage.Dashboard\bin\Debug\MainPage.Dashboard.dll",
-                    Arguments = "--explore " + dllFullName,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true
-                }
-            };
-
-            proc.Start();
-            while (!proc.StandardOutput.EndOfStream)
-            {
-                string line = proc.StandardOutput.ReadLine();
-                if (line.Contains("MNTT"))
-                {
-                    list.Add(line);
-                }
-            }
-            return list;
-        }
-    }
-}
+09-24 00:05:46.020  2210 11629 D HostEmulationManager: Binding to service ComponentInfo{wit.android.bcpBankingApp.millenniumPL/com.mastercard.mcbp.hce.DefaultHceService} for userid:0. mServiceBound : false, mServiceName : null
+09-24 00:05:46.031  1316  4376 V WindowManager: Relayout Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn}: viewVisibility=0 req=1080x2340 d0
+09-24 00:05:46.032  1316  5083 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:5fde80: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+09-24 00:05:46.033  1316  5083 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:5fde80: onCancelled at PHASE_SERVER_SHOULD_HIDE
+09-24 00:05:46.100  1316  5083 D ActivityTaskManager: scheduleTopResumedActivityChanged, onTop=false, r=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}, caller=com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2785 com.android.server.wm.TaskDisplayArea.positionChildTaskAt:565 com.android.server.wm.TaskDisplayArea.positionChildAt:481 com.android.server.wm.Task.moveToFront:5904 com.android.server.wm.ActivityStarter.startActivityInner:2811 com.android.server.wm.ActivityStarter.startActivityUnchecked:2252
+09-24 00:05:46.109  1316  1908 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.110  1316  1908 V WindowManager: Changing focus from Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn} to null displayId=0 Callers=com.android.server.wm.RootWindowContainer.updateFocusedWindowLocked:568 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:6751 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:6060 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2806
+09-24 00:05:46.112  1316  1446 I GameSDK@LifeCycle: noteResumeComponent(): package name  : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.114  2299  2299 I Edge.ActivityUtils: HomePackage : com.sec.android.app.launcher, resumePackageName : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.115  1316  1446 D SGM:FgCheckThread: noteResumeComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.123  1316  1446 D SGM:FgCheckThread: notePauseComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.131  1316  1908 W NotificationService: Blocking custom toast from package wit.android.bcpBankingApp.millenniumPL due to package not in the foreground at time the toast was posted
+09-24 00:05:46.135  1316  5083 D InputDispatcher: Focus left window (0): 6cc91cd wit.android.bcpBankingApp.millenniumPL/o.fmn
+09-24 00:05:46.175  2299  2433 I HoneySpace.TopTaskUseCase: topTasks 2578 ComponentInfo{wit.android.bcpBankingApp.millenniumPL/o.fmn}
+09-24 00:05:46.176  1316  4368 D SGM:FgCheckThread:   sendRunningComponentFocus(), pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.176  1316  4368 D InputDispatcher: Focused application(0): ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.177  1316  4368 V WindowManager: Changing focus from null to Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn} displayId=0 Callers=com.android.server.wm.RootWindowContainer.updateFocusedWindowLocked:568 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:6751 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:6060 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2806
+09-24 00:05:46.177  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_TASK_FOCUSED, pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.177  1316  1635 D SGM:FgCheckThread:   handleTaskFocused(), pkgName: wit.android.bcpBankingApp.millenniumPL, userID:0 mResumedPkgMap does not containsKey.
+09-24 00:05:46.177  1316  4368 D SGM:FgCheckThread:   sendRunningComponentFocus(), pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.177  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_TASK_FOCUSED, pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.177  1316  1635 D SGM:FgCheckThread:   handleTaskFocused(), pkgName: wit.android.bcpBankingApp.millenniumPL, userID:0 mResumedPkgMap does not containsKey.
+09-24 00:05:46.177  1316  4368 D ActivityTaskManager: scheduleTopResumedActivityChanged, onTop=true, r=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}, caller=com.android.server.wm.ActivityTaskSupervisor.scheduleTopResumedActivityStateIfNeeded:2816 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2808 com.android.server.wm.TaskFragment.setResumedActivity:573 com.android.server.wm.TaskFragment.onActivityStateChanged:897 com.android.server.wm.ActivityRecord.setState:6726 com.android.server.wm.TaskFragment.resumeTopActivity:1715
+09-24 00:05:46.177  1316  4368 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.179  4499  9191 I FASProvider: makeValuesForFasUpdate contentValues = package_name=wit.android.bcpBankingApp.millenniumPL extras=0 reason=deleted_from_mars_auto disableReason=deleted_from_mars_auto disableResetTime=1727129146176 uid=10416 mode=0 level=1 resetTime=0
+09-24 00:05:46.185  4499  9191 I FASProvider: makeValuesForFasUpdate contentValues = package_name=wit.android.bcpBankingApp.millenniumPL extras=0 reason=deleted_from_mars_auto disableReason=deleted_from_mars_auto disableResetTime=1727129146179 uid=10416 mode=0 level=1 resetTime=0
+09-24 00:05:46.187  1316  4376 D InputDispatcher: Focus entered window (0): 6cc91cd wit.android.bcpBankingApp.millenniumPL/o.fmn
+09-24 00:05:46.188  1316  1446 I GameSDK@LifeCycle: noteResumeComponent(): package name  : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.189  2299  2299 I Edge.ActivityUtils: HomePackage : com.sec.android.app.launcher, resumePackageName : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.189  1316  1446 D SGM:FgCheckThread: noteResumeComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.189  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_APP_RESUME, pkgName: wit.android.bcpBankingApp.millenniumPL, userid: 0
+09-24 00:05:46.190  1316  1635 D SGM:FgCheckThread:   handleResume(). pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0, isTunableApp: null
+09-24 00:05:46.190  1316  1635 D SGM:FgCheckThread: notifyFocusInOut(). of pkg: wit.android.bcpBankingApp.millenniumPL, type: 4, isTunableApp: false, userId: 0
+09-24 00:05:46.191  1316  1446 D SGM:GameManager: identifyGamePackage. wit.android.bcpBankingApp.millenniumPL, mCurrentUserId: 0, callerUserId: 0, callingMethodInfo: com.samsung.android.game.SemGameManager.isGamePackage(SemGameManager.java:104)
+09-24 00:05:46.191  1316  1446 D SGM:PkgDataHelper: getGamePkgData(). wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.191  1316  1446 D SGM:SemGameManager: isGamePackage(), pkgName=wit.android.bcpBankingApp.millenniumPL, ret=false
+09-24 00:05:46.191  1316  1908 D BiometricService/PreAuthInfo: Package: wit.android.bcpBankingApp.millenniumPL Sensor ID: 0 Modality: 2 Status: 7
+09-24 00:05:46.191  1316  1908 D BiometricService/PreAuthInfo: Package: wit.android.bcpBankingApp.millenniumPL Sensor ID: 1 Modality: 8 Status: 4
+09-24 00:05:46.194  2210 11629 D HostEmulationManager: Binding to service ComponentInfo{wit.android.bcpBankingApp.millenniumPL/com.mastercard.mcbp.hce.DefaultHceService} for userid:0. mServiceBound : false, mServiceName : null
+09-24 00:05:46.202  1316  1908 V WindowManager: Relayout Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn}: viewVisibility=0 req=1080x2340 d0
+09-24 00:05:46.206  1316  4376 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:1ec214e1: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+09-24 00:05:46.206  1316  4376 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:1ec214e1: onCancelled at PHASE_SERVER_SHOULD_HIDE
+09-24 00:05:46.281  1316  4376 D ActivityTaskManager: scheduleTopResumedActivityChanged, onTop=false, r=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}, caller=com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2785 com.android.server.wm.TaskDisplayArea.positionChildTaskAt:565 com.android.server.wm.TaskDisplayArea.positionChildAt:481 com.android.server.wm.Task.moveToFront:5904 com.android.server.wm.ActivityStarter.startActivityInner:2811 com.android.server.wm.ActivityStarter.startActivityUnchecked:2252
+09-24 00:05:46.295  1316  5083 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.295  1316  1446 D SGM:FgCheckThread: notePauseComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.296  1316  5083 V WindowManager: Changing focus from Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn} to null displayId=0 Callers=com.android.server.wm.RootWindowContainer.updateFocusedWindowLocked:568 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:6751 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:6060 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2806
+09-24 00:05:46.308  1316  5117 W NotificationService: Blocking custom toast from package wit.android.bcpBankingApp.millenniumPL due to package not in the foreground at time the toast was posted
+09-24 00:05:46.320  1316  5117 D InputDispatcher: Focus left window (0): 6cc91cd wit.android.bcpBankingApp.millenniumPL/o.fmn
+09-24 00:05:46.365  2299  6061 I HoneySpace.TopTaskUseCase: topTasks 2578 ComponentInfo{wit.android.bcpBankingApp.millenniumPL/o.fmn}
+09-24 00:05:46.367  1316  5117 D SGM:FgCheckThread:   sendRunningComponentFocus(), pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.367  1316  5117 D InputDispatcher: Focused application(0): ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.367  1316  5117 V WindowManager: Changing focus from null to Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn} displayId=0 Callers=com.android.server.wm.RootWindowContainer.updateFocusedWindowLocked:568 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:6751 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:6060 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2806
+09-24 00:05:46.371  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_TASK_FOCUSED, pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.371  1316  1635 D SGM:FgCheckThread:   handleTaskFocused(), pkgName: wit.android.bcpBankingApp.millenniumPL, userID:0 mResumedPkgMap does not containsKey.
+09-24 00:05:46.374  1316  5117 D SGM:FgCheckThread:   sendRunningComponentFocus(), pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.374  4499  6096 I FASProvider: makeValuesForFasUpdate contentValues = package_name=wit.android.bcpBankingApp.millenniumPL extras=0 reason=deleted_from_mars_auto disableReason=deleted_from_mars_auto disableResetTime=1727129146366 uid=10416 mode=0 level=1 resetTime=0
+09-24 00:05:46.374  1316  5117 D ActivityTaskManager: scheduleTopResumedActivityChanged, onTop=true, r=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}, caller=com.android.server.wm.ActivityTaskSupervisor.scheduleTopResumedActivityStateIfNeeded:2816 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2808 com.android.server.wm.TaskFragment.setResumedActivity:573 com.android.server.wm.TaskFragment.onActivityStateChanged:897 com.android.server.wm.ActivityRecord.setState:6726 com.android.server.wm.TaskFragment.resumeTopActivity:1715
+09-24 00:05:46.375  1316  5117 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.375  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_TASK_FOCUSED, pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.375  1316  1635 D SGM:FgCheckThread:   handleTaskFocused(), pkgName: wit.android.bcpBankingApp.millenniumPL, userID:0 mResumedPkgMap does not containsKey.
+09-24 00:05:46.385  1316  1446 I GameSDK@LifeCycle: noteResumeComponent(): package name  : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.386  2299  2299 I Edge.ActivityUtils: HomePackage : com.sec.android.app.launcher, resumePackageName : wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.387  1316  1908 D InputDispatcher: Focus entered window (0): 6cc91cd wit.android.bcpBankingApp.millenniumPL/o.fmn
+09-24 00:05:46.389  1316  1446 D SGM:FgCheckThread: noteResumeComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.390  1316  1635 D SGM:FgCheckThread: onLooperPrepared(), msg: MSG_APP_RESUME, pkgName: wit.android.bcpBankingApp.millenniumPL, userid: 0
+09-24 00:05:46.390  1316  1446 D SGM:GameManager: identifyGamePackage. wit.android.bcpBankingApp.millenniumPL, mCurrentUserId: 0, callerUserId: 0, callingMethodInfo: com.samsung.android.game.SemGameManager.isGamePackage(SemGameManager.java:104)
+09-24 00:05:46.390  1316  1446 D SGM:PkgDataHelper: getGamePkgData(). wit.android.bcpBankingApp.millenniumPL
+09-24 00:05:46.390  1316  1446 D SGM:SemGameManager: isGamePackage(), pkgName=wit.android.bcpBankingApp.millenniumPL, ret=false
+09-24 00:05:46.391  1316  1635 D SGM:FgCheckThread:   handleResume(). pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0, isTunableApp: null
+09-24 00:05:46.391  1316  1635 D SGM:FgCheckThread: notifyFocusInOut(). of pkg: wit.android.bcpBankingApp.millenniumPL, type: 4, isTunableApp: false, userId: 0
+09-24 00:05:46.393  1316  4368 D BiometricService/PreAuthInfo: Package: wit.android.bcpBankingApp.millenniumPL Sensor ID: 0 Modality: 2 Status: 7
+09-24 00:05:46.393  1316  4368 D BiometricService/PreAuthInfo: Package: wit.android.bcpBankingApp.millenniumPL Sensor ID: 1 Modality: 8 Status: 4
+09-24 00:05:46.400  2210 11629 D HostEmulationManager: Binding to service ComponentInfo{wit.android.bcpBankingApp.millenniumPL/com.mastercard.mcbp.hce.DefaultHceService} for userid:0. mServiceBound : false, mServiceName : null
+09-24 00:05:46.404  1316  1908 V WindowManager: Relayout Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn}: viewVisibility=0 req=1080x2340 d0
+09-24 00:05:46.408  1316  1908 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:2c7f8093: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_SAME_WINDOW_FOCUSED_WITHOUT_EDITOR
+09-24 00:05:46.408  1316  1908 I ImeTracker: wit.android.bcpBankingApp.millenniumPL:2c7f8093: onCancelled at PHASE_SERVER_SHOULD_HIDE
+09-24 00:05:46.486  1316  5117 D ActivityTaskManager: scheduleTopResumedActivityChanged, onTop=false, r=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}, caller=com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2785 com.android.server.wm.TaskDisplayArea.positionChildTaskAt:565 com.android.server.wm.TaskDisplayArea.positionChildAt:481 com.android.server.wm.Task.moveToFront:5904 com.android.server.wm.ActivityStarter.startActivityInner:2811 com.android.server.wm.ActivityStarter.startActivityUnchecked:2252
+09-24 00:05:46.491  1316  4376 W NotificationService: Blocking custom toast from package wit.android.bcpBankingApp.millenniumPL due to package not in the foreground at time the toast was posted
+09-24 00:05:46.532  1316  4368 D WindowManager: rotationForOrientation, orientationSource=ActivityRecord{86ada6c u0 wit.android.bcpBankingApp.millenniumPL/o.fmn t2578}
+09-24 00:05:46.534  1316  4368 V WindowManager: Changing focus from Window{6cc91cd u0 wit.android.bcpBankingApp.millenniumPL/o.fmn} to null displayId=0 Callers=com.android.server.wm.RootWindowContainer.updateFocusedWindowLocked:568 com.android.server.wm.WindowManagerService.updateFocusedWindowLocked:6751 com.android.server.wm.ActivityTaskManagerService.setLastResumedActivityUncheckLocked:6060 com.android.server.wm.ActivityTaskSupervisor.updateTopResumedActivityIfNeeded:2806
+09-24 00:05:46.537  1316  1446 D SGM:FgCheckThread: notePauseComponent(), received pkgName: wit.android.bcpBankingApp.millenniumPL, userId: 0
+09-24 00:05:46.554  1316  4376 D InputDispatcher: Focus left window (0): 6cc91cd wit.android.bcpBankingApp.millenniumPL/o.fmn
